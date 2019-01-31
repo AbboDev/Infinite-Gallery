@@ -1,0 +1,13 @@
+# Unnecessary files
+.DS_Store
+sftp-config.json
+
+# Node modules and generated assets
+node_modules/
+
+# Configuration files
+constants.php
+assets/constants.js
+
+# Uploads
+images/*
