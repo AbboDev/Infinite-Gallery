@@ -3,10 +3,10 @@
  */
 
 import axios from 'axios';
-import site_url from './constants.js';
+import {SITE_URL} from './constants.js';
 
 const HTTP = axios.create({
-  baseURL: `${site_url}/api/`,
+  baseURL: `${SITE_URL}/api/`,
 });
 
 export default HTTP;

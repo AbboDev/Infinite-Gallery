@@ -2,6 +2,4 @@
  *
  */
 
-export default {};
-
-export const site_url = 'site_url';
+export const SITE_URL = 'site_url';

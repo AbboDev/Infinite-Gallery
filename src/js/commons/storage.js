@@ -2,16 +2,16 @@
  *
  */
 
-import site_url from './constants.js';
+import {SITE_URL} from './constants.js';
 
 const storage = {
   debug: true,
   state: {
-    baseUrl: site_url,
-    readerUrl: `${site_url}/reader.php`,
-    imagesUrl: `${site_url}/images/`,
-    downloaderSingleUrl: `${site_url}/downloader-single.php`,
-    downloaderMultipleUrl: `${site_url}/downloader-multiple.php`,
+    baseUrl: SITE_URL,
+    readerUrl: `${SITE_URL}/reader.php`,
+    imagesUrl: `${SITE_URL}/images/`,
+    downloaderSingleUrl: `${SITE_URL}/downloader-single.php`,
+    downloaderMultipleUrl: `${SITE_URL}/downloader-multiple.php`,
 
     slides: [],
     count: 0,
