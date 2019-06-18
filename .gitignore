@@ -43,7 +43,10 @@ sftp-config.json
 /.idea/
 
 # Standard folders to ignore
+.eslintcache
+/nbproject/private/
 node_modules/
+assets/
 vendor/
 logs/*
 
