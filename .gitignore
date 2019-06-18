@@ -46,7 +46,6 @@ sftp-config.json
 .eslintcache
 /nbproject/private/
 node_modules/
-assets/
 vendor/
 logs/*
 
