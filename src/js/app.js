@@ -10,6 +10,7 @@ import Vue from 'vue';
 import App from './App.vue';
 
 import HTTP from './commons/axios.js';
+import storage from './commons/storage.js';
 
 import LazyLoadDirective from './directives/LazyLoadDirective';
 
