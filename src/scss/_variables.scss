@@ -1,0 +1,134 @@
+// /**
+//  *
+//  */
+
+$version: "0.0.3";
+
+//*****************************************************************************/
+// Color
+
+$primary: #8f8073;
+$secondary: #5b9279;
+
+$text: #12130f;
+$background: #eae6e5;
+
+$input-background: #8fcb9b;
+$border-color: $primary;
+
+$white: #FFFFFF;
+$black: #000000;
+
+$reverse_selection: true;
+
+//*****************************************************************************/
+// Margin & Padding
+
+$margin:                        15;
+$padding:                       15;
+
+//*****************************************************************************/
+// Border & Outline
+
+$border-size:                   2;
+$border-style:                  solid;
+$border-radius:                 5;
+
+$outline-size:                  2;
+$outline-offset:                0;
+
+//*****************************************************************************/
+// Font and Text
+
+$font-weight:                   300;
+$font-size:                     14px;
+$font-style:                    normal;
+$font-variant:                  normal;
+$font-main:                     'Anonymous+Pro';
+// $font-main:                     'VT323';
+$font-family:                   $font-main#{", monospace"};
+
+$line-height:                   18px;
+
+$max-text-columns:              4;
+
+//*****************************************************************************/
+// Transition
+
+$transition-time:               0.3s;
+$transition-speed:              ease-in-out;
+
+//*****************************************************************************/
+
+$columns-for-row:               (12, 10);
+$columns-for-row-default:       12;
+
+$aspect-ratio-values: (
+  (1, 1),
+  (4, 3),
+  (16, 10),
+  (16, 9),
+  (2, 1),
+  (3, 1),
+  (4, 1)
+);
+$aspect-ratio-values-default:   (1, 1);
+
+$break-points: (
+  'xl': 1681,
+  'lg': 1281,
+  'md': 1025,
+  'sm': 768,
+  'xs': 481
+);
+
+$font-weight-format: (
+  'extra-thin': 100,
+  'very-thin': 200,
+  'thin': 300,
+  'normal': 400,
+  'thick': 500,
+  'very-thick': 600,
+  'extra-thick': 700,
+  'mega-thick': 800,
+  'super-thick': 900
+);
+
+//*****************************************************************************/
+// BEMIT (Block - Element - Modifier) + Namespace
+
+$bemit: (
+  'scope': 's-',
+  'theme': 't-',
+  'object': 'o-',
+  'component': 'c-',
+  'utility': 'u-',
+  'action': 'js-',
+  'is': 'is-',
+  'has': 'has-',
+  'hack': '_-',
+  'media': '\@'
+);
+
+//*****************************************************************************/
+
+$html: (
+  'contained': true
+);
+
+$header: (
+  height: 50,
+  background: 'red'
+);
+
+$main: (
+  'height': 'full'
+);
+
+$page: (
+  'contained': false
+);
+
+$footer: (
+
+);

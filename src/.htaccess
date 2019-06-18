@@ -1,0 +1,7 @@
+<Files ~ "^.*">
+    Deny from all
+</Files>
+
+<Files ~ "^access\.txt">
+    Allow from all
+</Files>
