@@ -51,7 +51,7 @@ logs/*
 
 # Configuration files
 constants.php
-assets/constants.js
+constants.js
 
 # Uploads
 images/*
