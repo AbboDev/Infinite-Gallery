@@ -11,8 +11,7 @@
     "es6-promise": "^4.2.6",
     "normalize": "^0.3.1",
     "normalize-scss": "^7.0.1",
-    "vue": "^2.6.10",
-    "vue-router": "^3.0.5"
+    "vue": "^2.6.10"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
