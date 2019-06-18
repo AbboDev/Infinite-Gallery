@@ -14,8 +14,8 @@ if (!isset($_POST['imgs']) || empty($_POST['imgs'])) {
 /******************************************************************************/
 
 $images = explode(',', $_POST['imgs']);
-$dir = __DIR__ . "/images/optimized/";
-$path_to_json = __DIR__ . "/json";
+$dir = realpath(__DIR__ . "/../images/optimized/");
+$path_to_json = realpath(__DIR__ . "/../json");
 
 if (!file_exists($path_to_json)) {
   mkdir($path_to_json, 0777, true);

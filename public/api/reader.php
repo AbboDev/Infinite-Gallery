@@ -7,7 +7,7 @@
 
 header('Content-Type: application/json');
 
-$path_to_images = __DIR__ . "/images";
+$path_to_images = realpath(__DIR__ . "/../images");
 
 $images = array();
 
@@ -17,6 +17,7 @@ if (file_exists($path_to_images)) {
     function($v, $k) {
       return ($v !== "."
         && $v !== ".."
+        && $v !== ".gitignore"
         && strpos($v, 'large-') === false
         && strpos($v, 'thumb-') === false
         && strpos($v, 'optimized-') === false

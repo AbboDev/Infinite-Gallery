@@ -14,16 +14,16 @@ $file = tempnam("tmp", "zip");
 $zip = new ZipArchive();
 $zip->open($file, ZipArchive::OVERWRITE);
 
-$path_to_json = __DIR__ . "/json/{$_GET['data']}";
+$path_to_json = realpath(__DIR__ . "/../json/{$_GET['data']}");
 
 $string = file_get_contents($path_to_json);
 $json_a = json_decode($string, true);
 
 foreach ($json_a as $index => $image) {
-	if (file_exists(__DIR__ . "/images/optimized/optimized-{$image}")) {
-		$zip->addFile(__DIR__ . "/images/optimized/optimized-{$image}", $image);
-	} else if (file_exists(__DIR__ . "/images/{$image}")) {
-		$zip->addFile(__DIR__ . "/images/{$image}", $image);
+	if (file_exists(realpath(__DIR__ . "/../images/optimized/optimized-{$image}")) ){
+		$zip->addFile(realpath(__DIR__ . "/../images/optimized/optimized-{$image}", $image));
+	} else if (file_exists(realpath(__DIR__ . "/../images/{$image}"))) {
+		$zip->addFile(realpath(__DIR__ . "/../images/{$image}", $image));
 	}
 }
 

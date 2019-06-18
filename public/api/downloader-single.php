@@ -14,7 +14,7 @@ if (!isset($_GET['img']) || empty($_GET['img'])) {
 /******************************************************************************/
 
 $basename = basename($_GET['img']);
-$path = __DIR__ . "/images/";
+$path = realpath(__DIR__ . "/../images");
 $filename = $path . $basename;
 $optimized = $path . "optimized/optimized-{$basename}";
 
