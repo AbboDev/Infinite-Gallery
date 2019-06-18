@@ -17,6 +17,7 @@ import LazyLoadDirective from './directives/LazyLoadDirective';
 Vue.config.productionTip = false;
 
 Vue.prototype.$http = HTTP;
+Vue.prototype.$storage = storage;
 Vue.prototype.$appName = 'Infinite Gallery';
 
 Vue.directive('lazyload', LazyLoadDirective);
