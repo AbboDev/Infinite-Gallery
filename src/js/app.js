@@ -11,10 +11,14 @@ import App from './App.vue';
 
 import HTTP from './commons/axios.js';
 
-Vue.config.productionTip = false;
-Vue.prototype.$http = HTTP;
+import LazyLoadDirective from './directives/LazyLoadDirective';
 
+Vue.config.productionTip = false;
+
+Vue.prototype.$http = HTTP;
 Vue.prototype.$appName = 'Infinite Gallery';
+
+Vue.directive('lazyload', LazyLoadDirective);
 
 new Vue({
   el: '#app',

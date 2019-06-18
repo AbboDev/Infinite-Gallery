@@ -3,9 +3,10 @@
  */
 
 import axios from 'axios';
+import site_url from './constants.js';
 
 const HTTP = axios.create({
-  baseURL: 'http://localhost:8000/api/',
+  baseURL: `${site_url}/api/`,
 });
 
 export default HTTP;
