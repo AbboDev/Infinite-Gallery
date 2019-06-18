@@ -36,7 +36,8 @@
   },
   "scripts": {
     "start": "webpack --config webpack.config.js",
-    "php": "php -S localhost:8000"
+    "php": "php -S localhost:8000 -t public/",
+    "old_php": "php -S localhost:8000"
   },
   "author": "Thomas Abbondi <thomas.abbondi@crystalware.cloud>",
   "license": "ISC"
