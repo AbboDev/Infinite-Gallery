@@ -1,6 +1,6 @@
 {
-  "name": "minecraft-builder",
-  "version": "0.0.1",
+  "name": "infinite-gallery",
+  "version": "0.1.0",
   "description": "",
   "main": "app.js",
   "dependencies": {
