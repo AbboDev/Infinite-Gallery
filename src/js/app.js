@@ -8,6 +8,7 @@ import 'babel-polyfill';
 
 import Vue from 'vue';
 import App from './App.vue';
+import Downloader from './components/Downloader.vue';
 
 import HTTP from './commons/axios.js';
 import storage from './commons/storage.js';
@@ -25,4 +26,9 @@ Vue.directive('lazyload', LazyLoadDirective);
 new Vue({
   el: '#app',
   render: (h) => h(App)
+});
+
+new Vue({
+  el: '#downloader',
+  render: (h) => h(Downloader)
 });
