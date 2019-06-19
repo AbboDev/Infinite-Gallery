@@ -2,16 +2,15 @@
  *
  */
 
-import {SITE_URL} from './constants.js';
+import {API_URL} from './constants.js';
 
 const storage = {
   debug: true,
   state: {
-    baseUrl: SITE_URL,
-    readerUrl: `${SITE_URL}/reader.php`,
-    imagesUrl: `${SITE_URL}/images/`,
-    downloaderSingleUrl: `${SITE_URL}/downloader-single.php`,
-    downloaderMultipleUrl: `${SITE_URL}/downloader-multiple.php`,
+    imagesUrl: '/images/',
+    readerUrl: API_URL + '/reader.php',
+    downloaderSingleUrl: API_URL + '/downloader-single.php',
+    downloaderMultipleUrl: API_URL + '/downloader-multiple.php',
 
     slides: [],
     count: 0,
@@ -30,7 +29,6 @@ const storage = {
   },
   changeSlide(index) {
     this.state.currentSlide = index;
-
     this.state.sliderOpened = true;
   },
   closeSlider() {
