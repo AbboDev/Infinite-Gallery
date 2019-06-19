@@ -13,12 +13,12 @@ require_once("./constants.php");
 
 /******************************************************************************/
 
-require_once("lib/Tinify/Exception.php");
-require_once("lib/Tinify/ResultMeta.php");
-require_once("lib/Tinify/Result.php");
-require_once("lib/Tinify/Source.php");
-require_once("lib/Tinify/Client.php");
-require_once("lib/Tinify.php");
+require_once("./lib/Tinify/Exception.php");
+require_once("./lib/Tinify/ResultMeta.php");
+require_once("./lib/Tinify/Result.php");
+require_once("./lib/Tinify/Source.php");
+require_once("./lib/Tinify/Client.php");
+require_once("./lib/Tinify.php");
 
 try {
   \Tinify\setKey("Nh0rAnKCijS93VHZPjxGgibQaWrTdmZ3");
@@ -42,12 +42,12 @@ try {
     $option = 'optimized';
   }
 
-  $path = "images/";
+  $path = realpath(str_replace('\\', '/', __DIR__) . "/../images");
 
   $prefix = "{$option}-";
 
-  $original = $path . $_GET['img'];
-  $compress = $path . $option . "/" . $prefix . $_GET['img'];
+  $original = $path . "/" . $_GET['img'];
+  $compress = $path . "/" . $option . "/" . $prefix . $_GET['img'];
 
   if (file_exists($original)) {
     if (!file_exists($compress) && \Tinify\compressionCount() >= 500) {
