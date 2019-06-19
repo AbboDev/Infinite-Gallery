@@ -18,9 +18,9 @@ if (file_exists($path_to_images)) {
       return ($v !== "."
         && $v !== ".."
         && $v !== ".gitignore"
-        && strpos($v, 'large-') === false
-        && strpos($v, 'thumb-') === false
-        && strpos($v, 'optimized-') === false
+        && strpos($v, 'large') === false
+        && strpos($v, 'thumb') === false
+        && strpos($v, 'optimized') === false
       );
     },
     ARRAY_FILTER_USE_BOTH
