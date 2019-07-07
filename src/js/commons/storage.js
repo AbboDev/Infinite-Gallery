@@ -28,7 +28,7 @@ const storage = {
     }
   },
   changeSlide(index) {
-    this.state.currentSlide = index;
+    this.state.currentSlide = parseInt(index);
     this.state.sliderOpened = true;
   },
   closeSlider() {

@@ -44,7 +44,7 @@ export default {
   data: function() {
     return {
       shared: this.$storage.state,
-      activeSlideIndex: 0
+      // activeSlideIndex: this.$storage.state.currentSlide
     };
   },
   props: {
@@ -68,49 +68,54 @@ export default {
       type: Boolean,
       default: false
     },
-    startSlideIndex: {
-      type: Number,
-      default: 0
-    },
     autoTiming: {
       type: Number,
       default: 5000
     }
   },
-  created() {
-    this.activeSlideIndex = this.startSlideIndex;
-  },
+  // watch: {
+  //   activeSlideIndex: function(val) {
+  //     // eslint-disable-next-line no-console
+  //     console.log(this.shared.currentSlide);
+  //     this.activeSlideIndex = val;
+  //   }
+  // },
   methods: {
     goToSlide(slideIndex) {
       if (slideIndex >= 0 && slideIndex < this.slideTotal) {
-        this.activeSlideIndex = slideIndex;
+        this.shared.currentSlide = slideIndex;
       }
     },
     isControlActive(controlIndex) {
-      return controlIndex - 1 === this.activeSlideIndex;
+      return controlIndex - 1 === this.shared.currentSlide;
     },
     nextSlide() {
-      if (this.activeSlideIndex === (this.slideTotal - 1)) {
+      // eslint-disable-next-line no-console
+      console.log(this.shared.currentSlide);
+      // eslint-disable-next-line no-console
+      console.log(this.activeSlideIndex);
+
+      if (this.shared.currentSlide === (this.slideTotal - 1)) {
         if (this.loop === true) {
-          this.activeSlideIndex = 0;
+          this.shared.currentSlide = 0;
         } else {
           return false;
         }
       } else {
-        this.activeSlideIndex++;
+        this.shared.currentSlide++;
       }
 
       return true;
     },
     prevSlide() {
-      if (this.activeSlideIndex === 0) {
+      if (this.shared.currentSlide === 0) {
         if (this.loop === true) {
-          this.activeSlideIndex = (this.slideTotal - 1);
+          this.shared.currentSlide = (this.slideTotal - 1);
         } else {
           return false;
         }
       } else {
-        this.activeSlideIndex--;
+        this.shared.currentSlide--;
       }
 
       return true;
@@ -134,7 +139,7 @@ export default {
       return this.slideTotal * 100 + '%';
     },
     activeSlidePosition() {
-      return '-' + (100 / this.slideTotal) * this.activeSlideIndex + '%';
+      return '-' + (100 / this.slideTotal) * this.shared.currentSlide + '%';
     },
     containerStyle() {
       return `width: ${this.containerWidth};
