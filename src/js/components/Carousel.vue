@@ -188,9 +188,7 @@ export default {
      * When user release pointer finish slide moving.
      */
     slideEnd() {
-      if (this.sliding !== 0) {
-        // Reset sliding.
-        this.sliding = 0;
+      if (this.sliding === 2) {
 
         // Calculate which slide need to be in view.
         this.shared.currentSlide = this.pixelOffset < this.startPixelOffset
@@ -205,6 +203,8 @@ export default {
 
         this.$refs.container.classList.remove('is-sliding');
       }
+      // Reset sliding.
+      this.sliding = 0;
     }
   },
   mounted: function() {
