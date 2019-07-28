@@ -23,7 +23,16 @@
       </span>
     </div>
 
-    <div class="c-carousel__wrapper">
+    <div
+      class="c-carousel__wrapper"
+      @mousedown="slideStart"
+      @touchstart="slideStart"
+      @mouseup="slideEnd"
+      @touchend="slideEnd"
+      @mousemove="slide"
+      @touchmove="slide"
+      ref="wrapper"
+    >
       <div class="c-carousel__wrapper__container" :style="containerStyle" ref="container">
         <carousel-slide v-for="(slide, index) in shared.slides" :key="index" v-lazyload="'js-lazyload'">
           <div slot="image" class="c-slide__image js-lazyload" :data-url="shared.imagesUrl + slide"></div>
@@ -44,7 +53,12 @@ export default {
   data: function() {
     return {
       shared: this.$storage.state,
-      // activeSlideIndex: this.$storage.state.currentSlide
+      isMounted: false,
+      sliding: 0,
+      startClientX: 0,
+      startPixelOffset: 0,
+      pixelOffset: 0,
+      activeSlidePosition: 0
     };
   },
   props: {
@@ -73,13 +87,6 @@ export default {
       default: 5000
     }
   },
-  // watch: {
-  //   activeSlideIndex: function(val) {
-  //     // eslint-disable-next-line no-console
-  //     console.log(this.shared.currentSlide);
-  //     this.activeSlideIndex = val;
-  //   }
-  // },
   methods: {
     goToSlide(slideIndex) {
       if (slideIndex >= 0 && slideIndex < this.slideTotal) {
@@ -90,11 +97,6 @@ export default {
       return controlIndex - 1 === this.shared.currentSlide;
     },
     nextSlide() {
-      // eslint-disable-next-line no-console
-      console.log(this.shared.currentSlide);
-      // eslint-disable-next-line no-console
-      console.log(this.activeSlideIndex);
-
       if (this.shared.currentSlide === (this.slideTotal - 1)) {
         if (this.loop === true) {
           this.shared.currentSlide = 0;
@@ -125,6 +127,84 @@ export default {
     },
     cancelAutoSlide() {
       clearInterval(this.autoInterval);
+    },
+    /**
+     * Triggers when slide event started
+     */
+    slideStart(event) {
+      // If it is mobile device redefine event to first touch point
+      if (typeof event.originalEvent != 'undefined' && event.originalEvent.touches) {
+        event = event.originalEvent.touches[0];
+      }
+
+      // If sliding not started yet store current touch position to calculate distance in future.
+      if (this.sliding === 0) {
+        this.$refs.container.classList.add('is-sliding');
+        this.sliding = 1; // Status 1 = slide started.
+        this.startClientX = event.clientX;
+      }
+    },
+
+    /**
+     * Occurs when image is being slid.
+     */
+    slide(event) {
+      event.preventDefault();
+
+      if (typeof event.originalEvent != 'undefined' && event.originalEvent.touches) {
+        event = event.originalEvent.touches[0];
+      }
+
+      // Distance of slide.
+      let deltaSlide = event.clientX - this.startClientX;
+
+      // If sliding started first time and there was a distance.
+      if (this.sliding === 1 && deltaSlide != 0) {
+        this.sliding = 2; // Set status to 'actually moving'
+        this.startPixelOffset = this.pixelOffset; // Store current offset
+      }
+
+      //  When user move image
+      if (this.sliding === 2) {
+        // Means that user slide 1 pixel for every 1 pixel of mouse movement.
+        let touchPixelRatio = 1;
+
+        let checkFromStart = (this.shared.currentSlide == 0 && event.clientX > this.startClientX);
+        let checkFromEnd = (this.shared.currentSlide == (this.slideTotal - 1) && event.clientX < this.startClientX);
+
+        // Check for user doesn't slide out of boundaries
+        if (checkFromStart || checkFromEnd) {
+          // Set ratio to 5 means image will be moving by 5 pixels
+          // each time user moves it's pointer by 1 pixel. (Rubber-band effect)
+          touchPixelRatio = 5;
+        }
+
+        // Calculate move distance.
+        this.pixelOffset = this.startPixelOffset + (deltaSlide / touchPixelRatio);
+      }
+    },
+
+    /**
+     * When user release pointer finish slide moving.
+     */
+    slideEnd() {
+      if (this.sliding !== 0) {
+        // Reset sliding.
+        this.sliding = 0;
+
+        // Calculate which slide need to be in view.
+        this.shared.currentSlide = this.pixelOffset < this.startPixelOffset
+          ? this.shared.currentSlide + 1
+          : this.shared.currentSlide - 1;
+
+        // Make sure that unexisting slides weren't selected.
+        this.shared.currentSlide = Math.min(Math.max(this.shared.currentSlide, 0), this.slideTotal - 1);
+
+        // Since in this example slide is full viewport width offset can be calculated according to it.
+        this.pixelOffset = this.shared.currentSlide * -(this.$refs.wrapper.offsetWidth);
+
+        this.$refs.container.classList.remove('is-sliding');
+      }
     }
   },
   mounted: function() {
@@ -133,19 +213,37 @@ export default {
         this.nextSlide();
       }, parseInt(this.autoTiming));
     }
+
+    this.isMounted = true;
+  },
+  watch: {
+    'shared.currentSlide': function(val) {
+      if (!this.isMounted) {
+        this.activeSlidePosition = (100 / this.slideTotal * val) + '%';
+      } else {
+        this.activeSlidePosition = (this.$refs.wrapper.offsetWidth * val) + 'px';
+      }
+    },
+    pixelOffset: function(val) {
+      this.activeSlidePosition = (-val) + 'px';
+    }
   },
   computed: {
-    containerWidth() {
-      return this.slideTotal * 100 + '%';
-    },
-    activeSlidePosition() {
-      return '-' + (100 / this.slideTotal) * this.shared.currentSlide + '%';
+    wrapperWidth() {
+      return (!this.isMounted)
+        ? (this.slideTotal * 100) + '%'
+        : (this.slideTotal * this.$refs.wrapper.offsetWidth) + 'px';
     },
     containerStyle() {
-      return `width: ${this.containerWidth};
-      transform: translateX(${this.activeSlidePosition});
-      transition-timing-function: ${this.transitionTiming};
-      transition-duration: ${this.transitionDuration};`;
+      // eslint-disable-next-line no-console
+      console.log(this.activeSlidePosition);
+
+      return {
+        width: `${this.wrapperWidth}`,
+        transform: `translateX(-${this.activeSlidePosition})`,
+        transitionTimingFunction: this.transitionTiming,
+        transitionDuration: this.transitionDuration
+      };
     },
     slideTotal() {
       return this.shared.slides.length;
