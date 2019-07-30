@@ -122,7 +122,9 @@ export default {
 
       return true;
     },
-    closeSlider() {
+    closeSlider(event) {
+      event.preventDefault();
+
       this.$storage.closeSlider();
     },
     cancelAutoSlide() {
@@ -189,7 +191,6 @@ export default {
      */
     slideEnd() {
       if (this.sliding === 2) {
-
         // Calculate which slide need to be in view.
         this.shared.currentSlide = this.pixelOffset < this.startPixelOffset
           ? this.shared.currentSlide + 1
@@ -235,9 +236,6 @@ export default {
         : (this.slideTotal * this.$refs.wrapper.offsetWidth) + 'px';
     },
     containerStyle() {
-      // eslint-disable-next-line no-console
-      console.log(this.activeSlidePosition);
-
       return {
         width: `${this.wrapperWidth}`,
         transform: `translateX(-${this.activeSlidePosition})`,
