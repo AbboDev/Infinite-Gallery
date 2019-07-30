@@ -12,14 +12,14 @@ import Carousel from './components/Carousel.vue';
 import Downloader from './components/Downloader.vue';
 
 import HTTP from './commons/axios.js';
+Vue.prototype.$http = HTTP;
+
 import storage from './commons/storage.js';
+Vue.prototype.$storage = storage;
 
 import LazyLoadDirective from './directives/LazyLoadDirective';
-
 Vue.config.productionTip = false;
 
-Vue.prototype.$http = HTTP;
-Vue.prototype.$storage = storage;
 Vue.prototype.$appName = 'Infinite Gallery';
 
 Vue.directive('lazyload', LazyLoadDirective);

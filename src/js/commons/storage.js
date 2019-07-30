@@ -3,6 +3,7 @@
  */
 
 import {API_URL} from './constants.js';
+import HTTP from './axios.js';
 
 const storage = {
   debug: true,
@@ -33,6 +34,19 @@ const storage = {
   },
   closeSlider() {
     this.state.sliderOpened = false;
+  },
+  loadSlides(offset = 0) {
+    HTTP.get(this.state.readerUrl, {
+      params: {
+        'offset': offset
+      }
+    })
+      .then((response) => {
+        this.state.slides = this.state.slides.concat(response.data);
+      })
+      .catch((error) => {
+        this.state.errors.push(error);
+      });
   },
   downloadSingleImage(image) {
     var img = encodeURIComponent(image);

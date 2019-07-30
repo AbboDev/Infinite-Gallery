@@ -1,12 +1,6 @@
 <template lang="html">
-  <div id="grid">
-    <!-- v-infinite-scroll="loadMoreBox" -->
-    <div
-      infinite-scroll-disabled="busy"
-      infinite-scroll-distance="10"
-      infinite-scroll-immediate-check="true"
-      infinite-scroll-listen-for-event=""
-    >
+  <div id="grid" @scroll="loadMoreImages" class="c-grid" ref="grid">
+    <div class="c-grid__container" ref="grid_container">
       <div v-for="(slide, index) in shared.slides" class="o-thumb" :key="index" :data-image="slide" :data-index="index"
       v-lazyload="'js-lazyload'">
         <div
@@ -19,7 +13,7 @@
         <a href="#" @click="openAndScrollCarousel" class="o-thumb__command o-thumb__command--show"></a>
       </div>
     </div>
-    <span :class="[{ 'is-active': self.busy }, 'c-thumb__loader']"></span>
+    <span :class="['c-grid__loader', { 'is-active': self.busy }]"></span>
   </div>
 </template>
 
@@ -32,14 +26,40 @@ export default {
       self: {
         busy: false,
         maxBox: 12,
+        gap: 100,
         currentChunk: 0,
         loadedSlides: this.$storage.state.slides.slice(0, 18)
       }
     };
   },
+  watch: {
+    'self.busy': function(status) {
+      if (status === true) {
+        this.$storage.loadSlides(this.shared.slides.length);
+      }
+    },
+    'shared.slides': function(currSlides, prevSlides) {
+      this.self.busy = false;
+
+      // eslint-disable-next-line no-console
+      console.log(currSlides.length);
+      // eslint-disable-next-line no-console
+      console.log(prevSlides.length);
+    }
+  },
   methods: {
-    loadMoreBox: function() {
-      this.self.busy = true;
+    loadMoreImages: function() {
+      if (this.self.busy === false) {
+        let gridScroll = parseInt(this.$refs.grid.scrollTop);
+        let gridHeight = parseInt(this.$refs.grid.offsetHeight);
+        let gridContainerHeight = parseInt(this.$refs.grid_container.offsetHeight);
+
+        let gridOffset = gridScroll + gridHeight + this.self.gap;
+
+        if (gridOffset >= gridContainerHeight) {
+          this.self.busy = true;
+        }
+      }
     },
     downloadSingleImage: function(event) {
       event.preventDefault();
@@ -72,90 +92,30 @@ export default {
 </script>
 
 <style lang="scss">
-#carousel {
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  z-index: 10;
-  position: fixed;
-
-  display: block;
-
-  background-color: #323232;
-  background-image: linear-gradient(#3d3d3d, #1a1a1a);
-
-  opacity: 0;
-
-  visibility: hidden;
-
-  transition-duration: 500ms;
-  transition-timing-function: ease-in-out;
-  transition-property: z-index, opacity, visibility;
-}
-
-#carousel.is-active {
-  z-index: 20;
-
-  opacity: 1;
-
-  visibility: visible;
-}
-
-#carousel > .c-carousel__handler {
-  top: 50%;
-  left: 2.5%;
-  right: 2.5%;
-  position: absolute;
-
-  transform: translate(0px, -50%);
-}
-
-#carousel > .c-carousel__closer {
-  top: 20px;
-  left: auto;
-  right: 20px;
-  bottom: auto;
-  z-index: 25;
-  position: absolute;
-
-  cursor: pointer;
-
-  color: #323232;
-
-  width: 48px;
-  height: 48px;
-  display: block;
-
-  background-color: #27ae61;
-  background-size: 24px 24px;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-image: url('http://localhost:8000/assets/images/close.svg');
-
-  border-radius: 50%;
-}
-
-.VueCarousel-slide {
-  min-height: 95vh;
+.c-grid {
+  z-index: 15;
   position: relative;
+
+  box-sizing: border-box;
+  overflow-y: scroll;
+  max-height: 100vh;
 }
 
-.o-slide {
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  position: absolute;
+.c-grid .c-grid__container {
+  padding-top: 2.5%;
+  padding-left: 7.5%;
+  padding-right: 7.5%;
+  padding-bottom: 100px;
 
-  width: 100%;
-
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
+  box-sizing: border-box;
 }
 
-/******************************************************************************/
+@media (min-width: 768px) {
+  .c-grid .c-grid__container {
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+  }
+}
 
 .o-thumb {
   width: 100%;
@@ -284,7 +244,7 @@ export default {
   }
 }
 
-.c-thumb__loader {
+.c-grid__loader {
   top: auto;
   left: 50%;
   right: auto;
@@ -306,10 +266,10 @@ export default {
   transition-property: opacity;
   transition-timing-function: ease-in-out;
 
-  transform: translate(-50%, 0px);
+  transform: translate(-50%, -100px);
 }
 
-.c-thumb__loader.is-active {
+.c-grid__loader.is-active {
   opacity: 1;
 }
 
